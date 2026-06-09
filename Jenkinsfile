@@ -2,19 +2,18 @@ pipeline {
   agent any
 
   stages {
-    stage('Branch Information') {
+    stage('Environment Decision') {
       steps {
-        echo "Current Branch = ${env.BRANCH_NAME}"
-      }
-    }
-
-    stage('System Information') {
-      steps {
-        sh '''
-        hostname
-        date
-        pwd
-        '''
+        script {
+          if(env.BRANCH_NAME == "main") {
+            echo "Production Branch"
+          }
+          else if(env.BRANCH_NAME == "develop") {
+            echo "QA Branch"
+          } else {
+            echo " Feature Branch"
+          }
+        }
       }
     }
   }
